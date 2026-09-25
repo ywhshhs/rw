@@ -255,3 +255,22 @@ Key differences vs Mini Tank:
 - `canRepairBuildings` NOT set (would need `isBuilder: true` for buildings — drone repairs units only, balanced)
 - Sprite: 12×12 rounded dome, blinking green team light (2 frames), 4 thruster pads
 - AI: `useAsBuilder: false` so AI doesn't treat it as a builder
+
+---
+
+## 9. BALANCE PATCH: Mini Tank v1.1.0 (the first nerf!)
+
+**Playtest data:** ~5k credits of mini tanks overwhelmed 3 artillery + 4 scouts.
+**Root cause identified:** the stats were fine-ish (weaker than vanilla tank 1v1) — the problem was **AVAILABILITY**: `builtFrom: commandCenter` meant infinite early spam without investing in a factory.
+
+**Changes:**
+| Stat | v1.0 | v1.1 |
+|---|---|---|
+| Built from | commandCenter + ALL builders + fabricators | **landFactory only** |
+| maxHp | 150 | **130** |
+| directDamage | 20 | **15** |
+| price | 250 | 250 (kept) |
+
+**LESSON (balance design):** *availability is a balancing lever, often stronger than stats.* A unit that's slightly weak per-unit but free from the start will always warp games. Gate anything spammable behind a production building. Same reason the Repair Drone was designed T1-factory-only from day one.
+
+**Nerf checklist for OP units:** 1) restrict builtFrom to the "correct" factory, 2) cut damage (slows kills → enemy gets value), 3) cut HP (dies to counter-attack), 4) raise price LAST (feels bad, changes AI evaluation of every unit).
