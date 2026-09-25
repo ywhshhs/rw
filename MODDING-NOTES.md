@@ -436,3 +436,19 @@ x: 5         # (overrides the copied -5)
 - `armour` + `armourMinDamageToKeep` — flat damage reduction with a floor so it never goes immune
 - **Per-turret canAttack overrides** — each [turret_N] can have its OWN attack permissions and `delay:` (independent fire cycle!) — this is how hybrid units work
 - `shoot_flame: big` for heavy guns; `copyFrom` in turret sections works for MG pods too
+
+---
+
+## 20. 2.5D SPRITES + ARTILLERY SILHOUETTE (mortar redesign)
+
+**Feedback:** mortar looked like the mammoth with fewer barrels; sprites felt flat.
+
+**2.5D depth technique (the extrusion pass):** draw the unit's top-surface silhouette, then draw the SAME silhouette offset down-right (+3,+4) in a dark side-wall color, then the top surface on top. Result: the sprite looks like a slab with visible side walls = instant depth. Light source = top-left. Sides get outlined where the wall meets background. Worked as a reusable `extrude(im, silhouette, top_detail_fn, side_color, dx, dy)` helper applied to ALL ground units (mini tank 2px, AA 3px, mortar 4px, mammoth 5px = bigger unit, deeper walls).
+
+**Artillery silhouette language (why the mortar no longer looks like a tank):**
+- **Open carriage** — cross-members instead of full hull deck (you can almost see the ground between the beams)
+- **Barrel overhangs the rear** (extends past the body — guns poke out both ends in top-down artillery)
+- **Olive-drab palette** ((96,98,66) family) vs the blue-gray tank family — color codes the role
+- Ammo crates on the rear plate, visible shell in the bore, wheeled beams instead of full tracks
+- Turret = just the tube assembly with a loaded-shell pixel
+- Mammoth got a **dozer blade** (wider front plate) to break the rectangle + 5px walls
