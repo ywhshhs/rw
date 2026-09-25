@@ -511,3 +511,10 @@ From studying AEA 1.4.8 (also in this repo) + vanilla missileTank:
 2. **CUSTOM muzzle light-fade on every shooter** — shoot_flame: small, CUSTOM:lightSlowFade (effect defined per-file, images shipped in each unit folder).
 3. **movementEffect: CUSTOM:trackDust / bigDust** — AEA's movementEffect pattern (their helis: CUSTOM:EkRotorwash) applied as track dust; richer than dustEffect: true (per-unit scale/color/offset).
 4. **AEA sprite layering style** (for future units): multi-part sprites via [attachment_NAME] (attackjet: wings.png attachments) and [arm_N]/[leg_N] with image_end: (buzzard rotor blades). Moveable parts = separate images, not baked into the body.
+
+---
+
+## 26. GOTCHA: softCollisionOnAll is a [core] key, not [movement]
+
+**Error:** `key '[movement]softCollisionOnAll' was not used` — I'd put it under [movement] (it FEELS like a movement property). It's a [core] section key ("creates a soft collision effect when touching other units"). Fixed in all 6 AE units (value preserved, moved after displayRadius).
+**Meta-lesson:** when a "key was not used" error appears, first suspect SECTION placement — the key may be valid but belong elsewhere. [core] holds body/collision/economy keys; [movement] holds only movement keys.
