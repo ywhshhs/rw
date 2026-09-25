@@ -1,25 +1,14 @@
-# Rusted Warfare Mods
+# Rusted Warfare Mods (ywhshhs)
 
-## 🎖️ Tiny Army Pack — one mod, two units
+## 🎖️ AE — Armored Experimentals (ACTIVE PROJECT)
+A complete ground army: 2 starter-base units, 4×T1, 6×T2, 5×T3 — every unit with a clear role, strengths and weaknesses.
+- 📦 Current build: [`AE_v0.1.0.rwmod`](AE_v0.1.0.rwmod) (starter + T1 batch)
+- 📋 Full roster & balance design: [`AE-ROSTER.md`](AE-ROSTER.md)
+- 📁 Editable source: `ae-mod/`
 
-📥 **Download:** [`TinyArmy_v5.rwmod`](TinyArmy_v5.rwmod) → in-game: **Mods → Import → enable**
+## 📚 Knowledge
+- [`MODDING-NOTES.md`](MODDING-NOTES.md) — everything learned (formats, gotchas §1-25, sprite 2.5D technique, balance)
+- [`AEA_1.4.8.zip`](AEA_1.4.8.zip) — reference mod (high quality community mod)
 
-### Install (mobile)
-1. Tap the mod file above → **View raw** / download
-2. Rusted Warfare → **Mods** → **Import** → pick the file
-3. Enable it, start a Skirmish
-4. Both units are in the **T1 Land Factory** build menu (at the end)
-
-### The units
-| Unit | Cost | Stats | Role |
-|---|---|---|---|
-| 🚜 **Mini Tank** (v1.2) | 250cr | 130 HP + 15 dmg, fast | cheap light raider — swarm it, but it dies to real tanks |
-| 🛸 **Repair Drone** | 300cr | 120 HP + 50 shield, unarmed | hovers over land+water, heals 15 HP/s nearby, keep it safe |
-
-Both are gated behind the T1 army factory by design (no starter-base spam).
-
-### Source (edit me)
-- `source/units/mini_tank/` — Mini Tank INI + sprites
-- `source-repair-drone/units/repair_drone/` — Repair Drone INI + sprites
-- `MODDING-NOTES.md` — **everything we learned** (formats, gotchas, balance, pathing)
-- `sprite_preview_6x.png` / `repairDrone_preview.png` — sprite previews
+## 🗄️ Archive
+- `archive/tinyarmy/` — Tiny Army Pack (Mini Tank, Repair Drone, Mini AA, Mini Mortar, Mini Mammoth) — first-gen mod, kept for later updates
