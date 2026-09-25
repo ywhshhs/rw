@@ -518,3 +518,13 @@ From studying AEA 1.4.8 (also in this repo) + vanilla missileTank:
 
 **Error:** `key '[movement]softCollisionOnAll' was not used` — I'd put it under [movement] (it FEELS like a movement property). It's a [core] section key ("creates a soft collision effect when touching other units"). Fixed in all 6 AE units (value preserved, moved after displayRadius).
 **Meta-lesson:** when a "key was not used" error appears, first suspect SECTION placement — the key may be valid but belong elsewhere. [core] holds body/collision/economy keys; [movement] holds only movement keys.
+
+---
+
+## 27. CENTERED 2.5D + Beaver build fix (AE v0.3.0)
+
+**Centered extrusion (fixes "walls peak out"):** the old pass drew top surface at 0,0 and walls at +dx,+dy — so the BODY sat up-left of image center and walls hung out bottom-right (game centers the IMAGE on the unit, not the body). Fix: canvas grows to W+2dx/H+2dy, top surface drawn at (dx,dy), walls at (2dx,2dy) → whole shape symmetric around canvas center = unit position. The reusable kit is `ae_sprites.py` (parametric, relative coords — regenerate any unit at any size; batch regenerate all units with one run).
+
+**Size floor:** all AE units now ≥16px min dimension (Hornet 20×24, turret 16×20; Grasshopper 22×22 canvas; Boar 26×31).
+
+**Beaver couldn't build** ("drives to spot, does nothing"): flat `canBuild_1_name:` keys + missing `nanoBuildSpeed`. Working builder pattern (from combat_engineer.ini): **section-form** `[canBuild_1] name: turret / pos: 1` + `nanoBuildSpeed: 2` + `[ai] useAsBuilder: true`. flat canBuild_*_name = display only.
