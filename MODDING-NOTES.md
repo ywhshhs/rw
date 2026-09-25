@@ -377,3 +377,18 @@ Mini tank = perfect with minimal detail (vehicles read well from simple shapes).
 - Detail added: 4px tracks with dark edge guides, 3-tone sloped glacis, side panel seams, rear engine grilles (slats), exhaust pipes, 4px radar dish with sweep + mesh ring, pod bolts, tube rims + dark bores, gradient rocket tips, hatch hinge, side armor skirts.
 - **Wreck storytelling**: miniAA_dead has EMPTY tubes (rockets spent at death) vs loaded rockets in alive sprite. Missing/team-colored pixels = 0 on wreck.
 - **Packaging gotcha (almost shipped it): preview PNGs must NOT be inside units/ folders** — anything in the zip loads as mod content; keep previews at pack root or outside.
+
+---
+
+## 17. GOTCHA: the spawn-keys are PLURAL — `spawnProjectilesOnCreate`
+
+**Error:** `key '[projectile_]spawnProjectileOnCreate' was not used` — the SINGULAR form is not a real key (the spreadsheet's truncated example columns spell it singular in places; the full example block is the truth):
+```
+[projectile_main]
+spawnProjectilesOnExplode: shrapnel(offsetDir=90), shrapnel(offsetDir=-90)
+[projectile_shrapnel]
+turnSpeed: 0
+spawnProjectilesOnEndOfLife: secondary*3(spawnChance=0.5)
+```
+**Real keys (plural Projectiles):** `spawnProjectilesOnCreate` (on launch), `spawnProjectilesOnExplode` (on impact), `spawnProjectilesOnEndOfLife` (when expiring — shrapnel/cluster munitions).
+**Also learned:** named projectile sections `[projectile_flakRocket]` ARE valid (alongside indexed `[projectile_1]`); the game error prefixes the section FAMILY as `[projectile_]keyName` which looks confusing but just means "unknown key in a projectile section".
