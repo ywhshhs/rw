@@ -421,3 +421,18 @@ x: 5         # (overrides the copied -5)
 - `speed: 1.5` + `targetSpeed: 7` — slow launch then accelerate = launch-ramp feel
 - `frame: 4` was the vanilla missile tank's built-in frame, but custom image + trail is the reliable way to get rocket reads
 3. Stagger trick from vanilla: `linkDelayWithTurret: 2` + different `warmup:` = sequential double-tap (vanilla missile tank fires 2 missiles 15 ticks apart). warmup equal = simultaneous volley.
+
+---
+
+## 19. MID + ENDGAME: Mini Mortar (T2) & Mini Mammoth (T3)
+
+**Mini Mortar — 900cr T2 siege:** `ballistic: true` + `ballistic_height: 30` = lobbed arc shell, `areaDamage: 30 / areaRadius: 30` splash + small direct hit, 280 range, 2s reload, 160 HP, 0.7 speed. Sprite: fat mortar tube with dark bore + visible shell, rear baseplate. Balance anchor: vanilla artillery (1100cr/240hp/64dmg/330range) — mini mortar is weaker but cheaper and faster.
+
+**Mini Mammoth — 3800cr T3 breacher:** `armour: 8` + `armourMinDamageToKeep: 5` (flat damage reduction; anti-MG armor), twin cannons 110dmg/190range/2.5s, **per-turret attack permissions**: MG pods ([turret_2]/[turret_3], slaved) have their OWN `canAttackFlyingUnits: true` + `delay: 0.2s` — main guns stay anti-ground while MGs buzz air. 1400 HP, 0.55 speed, 12k mass. Balance anchor: vanilla mammothTank (~4500cr, 2100hp, 180dmg) — mini mammoth strictly weaker 1v1 but MGs add anti-air utility.
+
+**New mechanics used:**
+- `ballistic: true` + `ballistic_height:` — lobbed arc projectiles (mortars/howitzers)
+- `areaDamage` + `areaRadius` — splash (note: small directDamage ON TOP of splash)
+- `armour` + `armourMinDamageToKeep` — flat damage reduction with a floor so it never goes immune
+- **Per-turret canAttack overrides** — each [turret_N] can have its OWN attack permissions and `delay:` (independent fire cycle!) — this is how hybrid units work
+- `shoot_flame: big` for heavy guns; `copyFrom` in turret sections works for MG pods too
