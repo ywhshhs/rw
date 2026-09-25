@@ -452,3 +452,11 @@ x: 5         # (overrides the copied -5)
 - Ammo crates on the rear plate, visible shell in the bore, wheeled beams instead of full tracks
 - Turret = just the tube assembly with a loaded-shell pixel
 - Mammoth got a **dozer blade** (wider front plate) to break the rectangle + 5px walls
+
+---
+
+## 21. GOTCHA: shoot_flame values — "big" doesn't exist
+
+**Error:** `failed to find built-in or custom effect with the name: big`
+**Valid built-in flames** (from vanilla unit INIs): `small`, `medium`, `large`, `shockwave`, `smoke`, `NONE` — plus `CUSTOM:<effectSectionName>` (and comma lists: `shockwave, smoke`).
+**Also learned:** `shoot_flame` accepts multiple effects — `shoot_flame: large, CUSTOM:lightSlowFade` = muzzle flash + lingering light fade (nice for heavy cannons). Check vanilla usage (`grep shoot_flame assets/units/`) before inventing values.
