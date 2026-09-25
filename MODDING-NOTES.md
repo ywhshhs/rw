@@ -460,3 +460,25 @@ x: 5         # (overrides the copied -5)
 **Error:** `failed to find built-in or custom effect with the name: big`
 **Valid built-in flames** (from vanilla unit INIs): `small`, `medium`, `large`, `shockwave`, `smoke`, `NONE` — plus `CUSTOM:<effectSectionName>` (and comma lists: `shockwave, smoke`).
 **Also learned:** `shoot_flame` accepts multiple effects — `shoot_flame: large, CUSTOM:lightSlowFade` = muzzle flash + lingering light fade (nice for heavy cannons). Check vanilla usage (`grep shoot_flame assets/units/`) before inventing values.
+
+---
+
+## 22. GOTCHA: CUSTOM: effects are per-mod namespaces
+
+**Error:** `failed to find custom effect with the name: lightSlowFade` — even though vanilla units use `shoot_flame: CUSTOM:lightSlowFade`, vanilla defines that effect in ITS OWN files. `CUSTOM:` only resolves effect sections **within your mod**.
+**Fix:** copy the effect section into your unit INI and ship any images it needs:
+```ini
+shoot_flame: large, CUSTOM:lightSlowFade
+
+[effect_lightSlowFade]
+image: light_50.png        # copied from assets/units/shared/ into the mod
+life: 40
+fadeOut: true
+attachedToUnit: true
+color: #ffddaa             # vanilla uses cyan #63e6e8; warm tint matches cannons
+scaleFrom: 0.7
+scaleTo: 0.7
+alpha: 0.5
+drawUnderUnits: true
+```
+**Lesson:** every `[effect_NAME]` you reference with CUSTOM: must exist in your own files. Vanilla unit INIs each re-define their effects — that's the intended pattern, not duplication.
