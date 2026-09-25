@@ -9,6 +9,7 @@ HULL=(69,74,84,255); HULL_L=(87,95,108,255); HULL_L2=(105,113,126,255)
 HULL_D=(43,47,53,255); HULL_D2=(33,36,41,255); OUTLINE=(25,27,31,255)
 SIDE=(32,35,40,255); WHEEL=(30,32,36,255); WHEEL_L=(70,74,82,255)
 GREEN=(0,148,0,255); GREEN_L=(0,190,0,255)
+ROCKET=(200,60,40,255); ROCKET_L=(255,130,70,255)
 TAN=(122,112,82,255); TAN_L=(146,136,104,255); TAN_D=(92,84,58,255); TSIDE=(60,55,38,255)
 OHULL=(96,98,66,255); OHULL_L=(116,118,84,255); OHULL_L2=(134,136,100,255)
 OHULL_D=(70,72,46,255); OHULL_D2=(52,54,34,255); OSIDE=(40,42,26,255)
@@ -236,3 +237,109 @@ def beaver():
 
 for f in (grasshopper, vulture, boar, hornet, thorn, beaver): f()
 print("ALL 6 UNITS REGENERATED: centered 2.5D + min 16px")
+
+# ============ EXTENDED CHASSIS + TURRET GENERATORS (batch 2-5) ============
+ACCENTS = {
+ "steel": (69,74,84,255), "olive": (96,98,66,255), "dark": (52,56,64,255),
+ "purple": (86,72,110,255), "gold": (120,104,62,255), "red": (110,62,58,255),
+ "tan": (122,112,82,255), "white": (150,152,158,255),
+}
+ACCENT_L = {k: tuple(min(255,c+34) for c in v[:3])+(255,) for k,v in ACCENTS.items()}
+
+def chassis_silhouette(kind, w, h):
+    """Returns (silhouette, accent_key_default) for a chassis type in local space."""
+    if kind == "spider":
+        s  = {(x,y) for y in range(4,h-4) for x in range(3,w-3)}                  # abdomen
+        for cx,cy in [(2,2),(w-3,2),(2,h-3),(w-3,h-3)]:                            # 4 leg pods
+            s |= {(cx+dx,cy+dy) for dx in (-1,0,1) for dy in (-1,0,1)}
+        for i in range(1,4):
+            s |= {(1+ (0 if i<2 else -1), int(h*0.2)+i*2)}
+            s |= {(w-2+ (0 if i<2 else 1), int(h*0.2)+i*2)}
+        return s
+    if kind == "biped":
+        s  = {(x,y) for y in range(3,h-3) for x in range(4,w-4)}                  # torso
+        s |= {(x,y) for y in range(h-4,h) for x in list(range(2,4))+[w-4,w-2]}           # legs
+        s |= {(x,y) for y in range(0,3) for x in range(5,w-5)}                      # head
+        return s
+    if kind == "hover":
+        r = min(w,h)//2
+        cx, cy = w//2, h//2
+        s = {(x,y) for x in range(w) for y in range(h)
+             if (x-cx)**2+(y-cy)**2 <= r*r}
+        return s
+    if kind in ("crawler","nuke_silo","titan","shield_anchor","aa_battery","factory"):
+        s = {(x,y) for y in range(2,h-1) for x in range(0,w)}                       # wide flat
+        s |= {(x,y) for y in range(0,2) for x in range(2,w-2)}                      # front plate
+        return s
+    if kind == "artillery":
+        s  = {(x,y) for y in range(2,h-1) for x in range(2,w-2)}
+        s |= {(x,y) for y in range(h-4,h) for x in range(1,w-1)}                     # baseplate
+        return s
+    if kind == "medic":
+        return {(x,y) for y in range(1,h-1) for x in range(2,w-2)}
+    # tracked / heavy_tracked / wheeled / halftrack default rect
+    return {(x,y) for y in range(0,h) for x in range(0,w)}
+
+def detail_common(im, s, ox, oy, w, h, accent, kind):
+    A  = ACCENTS[accent]; AL = ACCENT_L[accent]
+    for (x,y) in s:
+        lx,ly = x-ox,y-oy
+        if kind in ("tracked","heavy_tracked") and (lx<3 or lx>=w-3):
+            px(im,x,y, TRACK_L if ly%2==0 else TRACK)
+        elif kind=="wheeled" and (lx<2 or lx>=w-2):
+            px(im,x,y, WHEEL if ly%4 else WHEEL_L)
+        else:
+            px(im,x,y,A)
+    # glacis highlight + team stripe
+    for (x,y) in s:
+        lx,ly = x-ox,y-oy
+        if ly<3 and 2<=lx<w-2: px(im,x,y,AL)
+    sy = int(h*0.30)
+    for (x,y) in s:
+        lx,ly = x-ox,y-oy
+        if ly in (sy,sy+1) and 3<=lx<w-3: px(im,x,y,GREEN)
+
+def generate_body(kind, w, h, accent, dx=3, dy=3):
+    sil = chassis_silhouette(kind, w, h)
+    def top(im, s, ox, oy):
+        detail_common(im, s, ox, oy, w, h, accent, kind)
+    return finish(sil, top, (28,30,34,255), dx, dy, ACCENTS[accent], w, h)
+
+def generate_turret(kind, accent, w=14, h=22, dx=3, dy=3):
+    """kind: gun|mortar|missiles|beam|flame|dish|mgs|nuke|transport"""
+    A  = ACCENTS[accent]; AL = ACCENT_L[accent]
+    if kind == "gun":
+        tsil = {(x,y) for y in range(h-10,h-4) for x in range(3,w-3)} | {(x,y) for y in range(3,h-10) for x in range(w//2-2,w//2+2)}
+    elif kind == "mortar":
+        tsil = {(x,y) for y in range(h-8,h-3) for x in range(3,w-3)}
+        tsil |= {(x,y) for y in range(3,h-8) for x in range(w//2-3,w//2+3)}
+    elif kind in ("missiles","aa_battery"):
+        tsil = {(x,y) for y in range(h-8,h-3) for x in range(2,w-2)}
+        tsil |= {(x,y) for y in range(2,h-8) for x in range(3,w-3)}
+    elif kind == "beam":
+        tsil = {(x,y) for y in range(h-9,h-3) for x in range(3,w-3)}
+        tsil |= {(x,y) for y in range(2,h-9) for x in range(w//2-1,w//2+3)}
+    elif kind == "flame":
+        tsil = {(x,y) for y in range(h-8,h-3) for x in range(3,w-3)}
+        tsil |= {(x,y) for y in range(3,h-8) for x in range(w//2-2,w//2+2)}
+    elif kind == "dish":
+        tsil = {(x,y) for y in range(h-6,h-2) for x in range(4,w-4)}
+        tsil |= {(x,y) for y in range(3,h-6) for x in range(w//2-2,w//2+2)}
+    elif kind == "transport":
+        tsil = {(x,y) for y in range(h-6,h) for x in range(2,w-2)}
+    elif kind == "nuke":
+        tsil = {(x,y) for y in range(h-8,h) for x in range(2,w-2)}
+        tsil |= {(x,y) for y in range(4,h-8) for x in range(5,w-5)}
+    else:
+        tsil = {(x,y) for y in range(h-9,h-3) for x in range(3,w-3)}
+    def top(im, s, ox, oy):
+        for (x,y) in s: px(im,x,y,A)
+        for (x,y) in s:
+            ly = y-oy
+            if kind in ("gun","beam","flame","dish") and ly<10: px(im,x,y,HULL_D)
+        # team light
+        for lx in (w//2-1,w//2):
+            for ly in (h-6,h-5): px(im,ox+lx,oy+ly,GREEN)
+        if kind=="missiles":
+            for lx in (4,7,w-6): px(im,ox+lx,oy+2,ROCKET); px(im,ox+lx,oy+3,ROCKET_L)
+    return finish(tsil, top, (28,30,34,255), dx, dy, A, w, h)

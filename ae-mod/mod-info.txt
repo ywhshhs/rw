@@ -1,6 +1,6 @@
 [mod]
 title: AE - Armored Experimentals
-description: A complete ground army across all tech tiers - 2 starter-base units, 4 T1, 6 T2 and 5 T3 experimental vehicles. Every unit has a clear role, strengths and weaknesses.
+description: Full army - 50+ units across T1-T5. Experimental Factory builds T4 (E-series) and T5 (X-series) codename units: nukes, EMP, lightning, blink tanks, spider walkers, mobile factories, transports and more.
 author: ywhshhs
-version: 0.3.0
+version: 0.4.0
 tags: units, army

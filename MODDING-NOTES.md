@@ -528,3 +528,21 @@ From studying AEA 1.4.8 (also in this repo) + vanilla missileTank:
 **Size floor:** all AE units now ≥16px min dimension (Hornet 20×24, turret 16×20; Grasshopper 22×22 canvas; Boar 26×31).
 
 **Beaver couldn't build** ("drives to spot, does nothing"): flat `canBuild_1_name:` keys + missing `nanoBuildSpeed`. Working builder pattern (from combat_engineer.ini): **section-form** `[canBuild_1] name: turret / pos: 1` + `nanoBuildSpeed: 2` + `[ai] useAsBuilder: true`. flat canBuild_*_name = display only.
+
+---
+
+## 28. AE MEGA-BUILD (v0.4.0): 46 new units, 5 tiers, Experimental Factory
+
+**Architecture that made it possible:** spec-driven generation — `ae_specs.py` (46-unit table) + `ae_sprites.py` (parametric chassis/turret kit) + `ae_generate.py` (INI emitter). One table row = full unit (INI + sprites + wrecks). New unit = one spec line. QA sweep script: required fields, [attack]x4, // comments, image existence, projectile section refs — 0 errors across 50+ INIs.
+
+**New mechanics verified + used:**
+- **Nuke weapon** (from vanilla nuke_launcher.ini): tags: nuke (interceptable), nukeWeapon: true, areaDamage/areaRadius/areaExpandTime: 75 (expanding wave), ballistic_height: 110, targetGround, shouldRevealFog. Ammo pattern: [action] with price + addResources: ammo=1 + ai_isDisabled.
+- **EMP**: hullDamageMultiplier: 0 + shieldDamage (vanilla comment in nuke INI confirms the EMP variant pattern).
+- **Lightning weapon**: instant: true + lightingEffect: true + chargeEffectImage + shoot_flame: CUSTOM:sparks2*3.
+- **Blink teleport** (vanilla blink.ini): [action] fireTurretXAtGround: dummyBlink + fireTurretXAtGround_withProjectile + [turret_dummyBlink] canShoot:false + [projectile_dummyBlink] teleportSource: true, instant: true, life: 99999. whenBuilding_cannotMove: true, addActionCooldownTime.
+- **Melee/suicide**: isMeMine... isMelee: true in [attack] (AEA Nuclear Drone pattern) — mines as melee attackers.
+- **Transports**: maxTransportingUnits, transportUnitsRequireMovementType.
+- **Mobile factory**: [canBuild_N] sections with forceNano: true building UNITS (combat_engineer pattern: it builds heavyTanks with forceNano).
+- **Cluster munitions**: spawnProjectilesOnEndOfLife: shrap*6(offsetRandomXY=25).
+- **Anti-nuke interception**: interceptProjectiles_withTags: nuke (antiNuke silo pattern).
+- **Codename system**: R/A/S/H/D series for T2/T3, E4-xx T4, X5-xx T5; techLevel capped at 3 in INI (min(3,tier)) since GUI only shows 3 colors; tiers 4/5 = price/factory gating.
