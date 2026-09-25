@@ -2,5 +2,5 @@
 title: AE - Armored Experimentals
 description: A complete ground army across all tech tiers - 2 starter-base units, 4 T1, 6 T2 and 5 T3 experimental vehicles. Every unit has a clear role, strengths and weaknesses.
 author: ywhshhs
-version: 0.1.0
+version: 0.2.0
 tags: units, army
