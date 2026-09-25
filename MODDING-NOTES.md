@@ -392,3 +392,32 @@ spawnProjectilesOnEndOfLife: secondary*3(spawnChance=0.5)
 ```
 **Real keys (plural Projectiles):** `spawnProjectilesOnCreate` (on launch), `spawnProjectilesOnExplode` (on impact), `spawnProjectilesOnEndOfLife` (when expiring — shrapnel/cluster munitions).
 **Also learned:** named projectile sections `[projectile_flakRocket]` ARE valid (alongside indexed `[projectile_1]`); the game error prefixes the section FAMILY as `[projectile_]keyName` which looks confusing but just means "unknown key in a projectile section".
+
+---
+
+## 18. MULTI-ROCKET VOLLEYS: slaved turrets, not projectile spawning
+
+**Bug:** spawnProjectilesOnCreate volley only showed 1 rocket, and it looked like a bullet (built-in `frame: 4`).
+**Fix — the vanilla missileTank pattern (from the APK's own INI):**
+1. **3 simultaneous rockets** = slaved invisible turrets, NOT projectile spawning:
+```ini
+[turret_1]   # master: aims the target, canShoot: false (never fires)
+canShoot: false
+shouldResetTurret: false
+[turret_2]   # left pod: slaved to master aim, fires every volley
+attachedTo: 1
+slave: true
+invisible: true
+warmup: 2
+projectile: 1
+shoot_sound: missile_fire
+[turret_3]   # right pod: copy turret_2, mirror x
+copyFrom: 2
+x: 5         # (overrides the copied -5)
+```
+2. **Rocket look** = custom projectile image + trail:
+- `[projectile_1] image: rocket.png` ("Overrides drawType and frame") — draw the rocket pointing UP, game rotates it to travel direction
+- `trailEffect: true` — smoke trail (this is what makes vanilla missiles read as missiles!)
+- `speed: 1.5` + `targetSpeed: 7` — slow launch then accelerate = launch-ramp feel
+- `frame: 4` was the vanilla missile tank's built-in frame, but custom image + trail is the reliable way to get rocket reads
+3. Stagger trick from vanilla: `linkDelayWithTurret: 2` + different `warmup:` = sequential double-tap (vanilla missile tank fires 2 missiles 15 ticks apart). warmup equal = simultaneous volley.
