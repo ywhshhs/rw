@@ -292,3 +292,19 @@ Key differences vs Mini Tank:
 | `moveAccelerationSpeed` | 0.08 | **0.1** | quicker get-away after a stop |
 
 **LESSON:** in RW, "obstacles" are mostly other units (neutral trees/crystals count). Any unit that feels "sticky" needs softCollisionOnAll + turn tuning. Big soft values = swarm overlap (use 15+ for ant-like units), small (3-6) = just slide assistance.
+
+---
+
+## 11. PACKAGING LESSON: ship multi-unit mods as ONE .rwmod
+
+Installing N separate .rwmods is tedious (N imports + N toggles). A single mod can hold unlimited units — just add more folders under `units/`:
+
+```
+TinyArmy.rwmod
+├── mod-info.txt          (one metadata file for the whole pack)
+└── units/
+    ├── mini_tank/        (miniTank.ini + PNGs)
+    └── repair_drone/     (repairDrone.ini + PNGs)
+```
+
+Repo now ships `TinyArmy.rwmod` (Mini Tank v1.2 + Repair Drone) as the single install; individual mods were removed to avoid version drift.
