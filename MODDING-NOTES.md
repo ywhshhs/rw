@@ -493,3 +493,11 @@ drawUnderUnits: true
 1. Write the section out explicitly (what we did — verbose but bulletproof)
 2. Documented section-to-section inheritance via the header: `[turret_3 : turret_2]` + only the overrides (e.g. `x: 8`)
 **Rule:** shared logic between turrets = header inheritance or explicit fields; `copyFrom:` = files only.
+
+---
+
+## 24. GOTCHA: per-turret range is `limitingRange`, not maxAttackRange
+
+**Error:** `key '[turret_2]maxAttackRange' was not used` — turret sections do NOT take maxAttackRange (that's [attack]-only, the unit-wide range).
+**The right key:** `limitingRange: 140` — *"Make this turret have less range than the maxAttackRange. Do not apply this to all turrets, change maxAttackRange instead."* (1.13+). MGs = main gun range 190, capped to 140 via limitingRange.
+**Related per-turret keys worth knowing:** `canAttackMaxAngle: 181` (fire without turning - missiles), `limitingAngle: 60` (fire arc sides), `clearTurretTargetAfterFiring` (multi-targeting).
