@@ -239,3 +239,19 @@ useAsBuilder: false
 | Game's own example | `assets/builtin_mods/mega_builders/` inside the APK/game folder |
 
 **Debug flow when a unit breaks:** in-game error text names the bad key → check section placement → check `#` comments → check required fields (name/maxHp/price/mass/radius + image + canAttack×4 + movementType) → delete + re-import mod (cache!) → restart match.
+
+---
+
+## 8. REPAIR DRONE (mod #2 — recipe + what it teaches)
+
+Design goals from the user: **NOT buildable from starter base**, **T1 army factory only**, **50 HP shield**.
+
+Key differences vs Mini Tank:
+- `builtFrom_1_name: landFactory` ONLY (no commandCenter entry → not from starter base; no other builders)
+- Shield: `maxShield: 50` + `shieldRegen: 0.15` (per-frame; ~5.5s to refill 50 from 0 at 9/sec... 0.15×60fps=9/s)
+- Repair: `canRepairUnits: true` + `nanoRepairSpeed: 0.25` (vanilla default 0.2) + `nanoRange: 70` (default 85)
+- **NO [attack] section at all** = truly unarmed, no attack cursor
+- `movementType: HOVER` + `targetHeight: 1.5` + `targetHeightDrift: 0.8` + `moveSlidingMode: true` = hovering bob, crosses land+water
+- `canRepairBuildings` NOT set (would need `isBuilder: true` for buildings — drone repairs units only, balanced)
+- Sprite: 12×12 rounded dome, blinking green team light (2 frames), 4 thruster pads
+- AI: `useAsBuilder: false` so AI doesn't treat it as a builder

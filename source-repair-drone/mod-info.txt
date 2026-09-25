@@ -1,0 +1,6 @@
+[mod]
+title: Repair Drone (Test Mod)
+description: Adds a tiny hover drone that repairs nearby friendly units. 50 HP shield. Built from the T1 army factory only.
+author: ywhshhs
+version: 1.0.0
+tags: units, support
