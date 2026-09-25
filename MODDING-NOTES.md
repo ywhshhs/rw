@@ -274,3 +274,21 @@ Key differences vs Mini Tank:
 **LESSON (balance design):** *availability is a balancing lever, often stronger than stats.* A unit that's slightly weak per-unit but free from the start will always warp games. Gate anything spammable behind a production building. Same reason the Repair Drone was designed T1-factory-only from day one.
 
 **Nerf checklist for OP units:** 1) restrict builtFrom to the "correct" factory, 2) cut damage (slows kills → enemy gets value), 3) cut HP (dies to counter-attack), 4) raise price LAST (feels bad, changes AI evaluation of every unit).
+
+---
+
+## 10. PATHING PATCH: Mini Tank v1.2.0 ("why is it humping the crystal?")
+
+**User bug report:** mini tanks keep running into resource spots and trees, getting stuck ~1s.
+
+**ROOT CAUSE (neat fact):** trees and resource crystals are **neutral UNITS in RW** (see vanilla name list: `tree`, `crystalResource`), not map tiles. With `softCollisionOnAll: 0` (vanilla tank default) the mini tank hard-collides with them and grinds to a stop against their collision radius.
+
+**Fix applied:**
+| Key | Before | After | Why |
+|---|---|---|---|
+| `softCollisionOnAll` | 0 (absent) | **5** | soft collision = slide around neutral units/obstacles instead of dead-stop (helicopters use 18 to push through swarms) |
+| `maxTurnSpeed` | 4.5 | **6** | tighter cornering around blocked tiles |
+| `turnAcceleration` | 0.25 | **0.4** | faster direction recovery when bumped |
+| `moveAccelerationSpeed` | 0.08 | **0.1** | quicker get-away after a stop |
+
+**LESSON:** in RW, "obstacles" are mostly other units (neutral trees/crystals count). Any unit that feels "sticky" needs softCollisionOnAll + turn tuning. Big soft values = swarm overlap (use 15+ for ant-like units), small (3-6) = just slide assistance.
