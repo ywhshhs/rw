@@ -501,3 +501,13 @@ drawUnderUnits: true
 **Error:** `key '[turret_2]maxAttackRange' was not used` — turret sections do NOT take maxAttackRange (that's [attack]-only, the unit-wide range).
 **The right key:** `limitingRange: 140` — *"Make this turret have less range than the maxAttackRange. Do not apply this to all turrets, change maxAttackRange instead."* (1.13+). MGs = main gun range 190, capped to 140 via limitingRange.
 **Related per-turret keys worth knowing:** `canAttackMaxAngle: 181` (fire without turning - missiles), `limitingAngle: 60` (fire arc sides), `clearTurretTargetAfterFiring` (multi-targeting).
+
+---
+
+## 25. AEA TECHNIQUE IMPORT (referencing the high-quality mod)
+
+From studying AEA 1.4.8 (also in this repo) + vanilla missileTank:
+1. **`idleSpin: 2`** — turrets can spin continuously. The Mini AA's radar dish is now a SEPARATE turret sprite ([turret_4], image: radarDish.png, canShoot: false, idleSpin: 2) = real spinning radar instead of a 2-frame fake sweep. Turret sections take their own `image:` ("overrides unit's main turret image").
+2. **CUSTOM muzzle light-fade on every shooter** — shoot_flame: small, CUSTOM:lightSlowFade (effect defined per-file, images shipped in each unit folder).
+3. **movementEffect: CUSTOM:trackDust / bigDust** — AEA's movementEffect pattern (their helis: CUSTOM:EkRotorwash) applied as track dust; richer than dustEffect: true (per-unit scale/color/offset).
+4. **AEA sprite layering style** (for future units): multi-part sprites via [attachment_NAME] (attackjet: wings.png attachments) and [arm_N]/[leg_N] with image_end: (buzzard rotor blades). Moveable parts = separate images, not baked into the body.
