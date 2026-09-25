@@ -308,3 +308,19 @@ TinyArmy.rwmod
 ```
 
 Repo now ships `TinyArmy.rwmod` (Mini Tank v1.2 + Repair Drone) as the single install; individual mods were removed to avoid version drift.
+
+---
+
+## 12. GOTCHA #1 STRIKE: `[attack]` is REQUIRED — even for unarmed units
+
+**Bug:** repair drone errored in-game: *"could not find canAttack in configuration file in section: attack"*.
+**Cause:** I omitted the whole `[attack]` section thinking "no section = no weapon". Wrong — the official reference START table lists `[attack] canAttack/canAttackFlyingUnits/canAttackLandUnits/canAttackUnderwaterUnits` as REQUIRED CODE for EVERY unit.
+**Fix:** every unit gets the section; disarming is a VALUE choice:
+```ini
+[attack]
+canAttack: false
+canAttackFlyingUnits: false
+canAttackLandUnits: false
+canAttackUnderwaterUnits: false
+```
+**Rule:** required fields can have their values changed but never be omitted. `false` disarms; missing section = load error.
