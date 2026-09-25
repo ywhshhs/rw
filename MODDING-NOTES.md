@@ -354,3 +354,16 @@ Mini tank = perfect with minimal detail (vehicles read well from simple shapes).
 - Team light still center (blinking 2×2 → reads as "heart")
 - Wreck: missing one rotor pod + cracked hull + scorch = instantly readable as "this drone died"
 - Green px count is small (8) on purpose: only the core light is team colored
+
+---
+
+## 15. BUG ZAPPER (mod #3 — T2 AA, user-specced)
+
+**Design by committee (user tuned my spec):** speed 1.3→**0.9** (cheap+fast AA would ruin early air — mass-producible chasers are broken), 125 HP, 50 shield, **3 rockets × 25 dmg every 0.75s** air-only.
+
+**New mechanics introduced:**
+- `shootDelay: 0.75s` — accepts SECONDS directly (or frames: `45`)
+- **3 rockets at once**: center `[projectile_1]` uses `spawnProjectileOnCreate: flakRocket(offsetX=-6, recursionLimit=0), flakRocket(offsetX=6, recursionLimit=0)` — spawns 2 named child projectiles at launch. Children need their own `[projectile_flakRocket]` section with same `directDamage: 25`. `recursionLimit: 0` stops chain-spawning.
+- **Air-only**: `[attack] canAttack: true + canAttackFlyingUnits: true + canAttackLandUnits/UnderwaterUnits: false`
+- Sprite storytelling: 3 visible rocket tubes in the turret image = telegraphs the 3-rocket volley; radar dish sweep animated via BODY frames (frame 0 dish-left, frame 1 dish-right) since turret-frame animation keys weren't confirmed — body frames are the reliable animation channel.
+- Pack structure: just add another folder `units/bug_zapper/` — same mod, zero extra install cost.

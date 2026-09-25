@@ -1,6 +1,6 @@
 [mod]
-title: Mini Tank (Test Mod)
-description: Adds one tiny tank. Buildable from the starter base (Command Center) and any builder - builder, builderShip, combat/mech engineer and fabricators.
+title: Tiny Army Pack v4
+description: Three tiny units - Mini Tank (light raider), Repair Drone (hover healer, 50hp shield) and Bug Zapper (T2 anti-air, 3 rockets per volley). All build from the T1 army factory.
 author: ywhshhs
-version: 1.0.0
-tags: units, test
+version: 3.0.0
+tags: units, pack
