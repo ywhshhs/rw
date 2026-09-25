@@ -1,29 +1,25 @@
 # Rusted Warfare Mods
 
-## Mini Tank (Test Mod)
-A tiny T1 tank — **buildable from the starter base (Command Center) and every builder**.
+## 🎖️ Tiny Army Pack — one mod, two units
 
-📥 **Download the mod:** [`MiniTank.rwmod`](MiniTank.rwmod) → then in-game: **Mods → Import → enable**
+📥 **Download:** [`TinyArmy.rwmod`](TinyArmy.rwmod) → in-game: **Mods → Import → enable**
 
-### How to install (mobile)
-1. Download `MiniTank.rwmod` (tap the file above, then **View raw** / download button)
-2. Open Rusted Warfare → **Mods** → **Import** → pick the downloaded file
-3. Enable the mod, start a Skirmish
-4. Select your **Command Center** → Mini Tank is slot 2 (or any builder → end of build menu)
+### Install (mobile)
+1. Tap the mod file above → **View raw** / download
+2. Rusted Warfare → **Mods** → **Import** → pick the file
+3. Enable it, start a Skirmish
+4. Both units are in the **T1 Land Factory** build menu (at the end)
+
+### The units
+| Unit | Cost | Stats | Role |
+|---|---|---|---|
+| 🚜 **Mini Tank** (v1.2) | 250cr | 130 HP + 15 dmg, fast | cheap light raider — swarm it, but it dies to real tanks |
+| 🛸 **Repair Drone** | 300cr | 120 HP + 50 shield, unarmed | hovers over land+water, heals 15 HP/s nearby, keep it safe |
+
+Both are gated behind the T1 army factory by design (no starter-base spam).
 
 ### Source (edit me)
-| File | What it is |
-|---|---|
-| `source/mod-info.txt` | Mod metadata (title/author/version) |
-| `source/units/mini_tank/miniTank.ini` | Unit definition — stats, build links, turret, projectile |
-| `source/units/mini_tank/miniTank.png` | Body sprite (2 frames, 16×20 each) |
-| `source/units/mini_tank/miniTank_turret.png` | Turret sprite (10×20, points up) |
-| `source/units/mini_tank/miniTank_dead.png` | Wreck sprite |
-| `sprite_preview_6x.png` | Zoomed preview of the sprites |
-
-### Modding quick notes
-- `.rwmod` = plain ZIP of the mod folder (mod-info.txt must be at the zip root)
-- Only `#` works as INI comments — `//` gets parsed as a key and spams errors
-- Green pixels `(0,148,0)` on sprites become the player's team color
-- `builtFrom_1_name: commandCenter` on a unit adds it to that building's production menu
-- `builtFrom_N_forceNano: true` makes builders nano-construct units on the ground
+- `source/units/mini_tank/` — Mini Tank INI + sprites
+- `source-repair-drone/units/repair_drone/` — Repair Drone INI + sprites
+- `MODDING-NOTES.md` — **everything we learned** (formats, gotchas, balance, pathing)
+- `sprite_preview_6x.png` / `repairDrone_preview.png` — sprite previews
