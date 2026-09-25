@@ -367,3 +367,13 @@ Mini tank = perfect with minimal detail (vehicles read well from simple shapes).
 - **Air-only**: `[attack] canAttack: true + canAttackFlyingUnits: true + canAttackLandUnits/UnderwaterUnits: false`
 - Sprite storytelling: 3 visible rocket tubes in the turret image = telegraphs the 3-rocket volley; radar dish sweep animated via BODY frames (frame 0 dish-left, frame 1 dish-right) since turret-frame animation keys weren't confirmed — body frames are the reliable animation channel.
 - Pack structure: just add another folder `units/bug_zapper/` — same mod, zero extra install cost.
+
+---
+
+## 16. MINI AA (final name) + SPRITE QoD UPGRADE
+
+- Renamed bugZapper → **miniAA** (internal name, display text, files, folder) — always rename ALL layers: `name:` (what other units/logic reference), `displayText:` (UI), file names, folder name. Renaming after packaging = rebuild zip.
+- Sprite detail upgrade technique: **mirror-drawing** (draw left half, mirror to right) keeps tanks symmetric while doubling detail cheaply. More tones = smoother read: added HULL_L2/HULL_D2 for 5-tone shading.
+- Detail added: 4px tracks with dark edge guides, 3-tone sloped glacis, side panel seams, rear engine grilles (slats), exhaust pipes, 4px radar dish with sweep + mesh ring, pod bolts, tube rims + dark bores, gradient rocket tips, hatch hinge, side armor skirts.
+- **Wreck storytelling**: miniAA_dead has EMPTY tubes (rockets spent at death) vs loaded rockets in alive sprite. Missing/team-colored pixels = 0 on wreck.
+- **Packaging gotcha (almost shipped it): preview PNGs must NOT be inside units/ folders** — anything in the zip loads as mod content; keep previews at pack root or outside.

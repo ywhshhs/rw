@@ -2,7 +2,7 @@
 
 ## 🎖️ Tiny Army Pack — one mod, two units
 
-📥 **Download:** [`TinyArmy.rwmod`](TinyArmy.rwmod) → in-game: **Mods → Import → enable**
+📥 **Download:** [`TinyArmy_v5.rwmod`](TinyArmy_v5.rwmod) → in-game: **Mods → Import → enable**
 
 ### Install (mobile)
 1. Tap the mod file above → **View raw** / download
