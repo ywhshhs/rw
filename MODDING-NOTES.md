@@ -482,3 +482,14 @@ alpha: 0.5
 drawUnderUnits: true
 ```
 **Lesson:** every `[effect_NAME]` you reference with CUSTOM: must exist in your own files. Vanilla unit INIs each re-define their effects — that's the intended pattern, not duplication.
+
+---
+
+## 23. GOTCHA: copyFrom is FILE-level, not turret-level
+
+**Error:** `could not find: y in configuration file under [turret_3]` — I copied the vanilla missileTank's `copyFrom: 2` shortcut, giving turret_3 only `x: 8` and assuming the rest (y, projectile, permissions) would be inherited. They weren't.
+**The reference says it plainly:** `copyFrom: file(s) (ini)` — it pulls from FILES (e.g. `copyFrom: ROOT:defaultTanks.template, tankT1.ini`), not from sibling sections. Vanilla's turret_3 uses `copyFrom: 2` but ALSO re-declares its fields — don't trust that pattern.
+**Safe fixes (either):**
+1. Write the section out explicitly (what we did — verbose but bulletproof)
+2. Documented section-to-section inheritance via the header: `[turret_3 : turret_2]` + only the overrides (e.g. `x: 8`)
+**Rule:** shared logic between turrets = header inheritance or explicit fields; `copyFrom:` = files only.
