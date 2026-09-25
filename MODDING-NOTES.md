@@ -342,3 +342,15 @@ canAttackUnderwaterUnits: false
 4. Import the fresh file, enable, start a NEW match (mods load at match start, not in the menu)
 
 **Rule of thumb:** *changing the file is not enough if the name is the same — rename to bust every cache layer.*
+
+---
+
+## 14. SPRITE LESSON: support units need MORE detail, not less
+
+Mini tank = perfect with minimal detail (vehicles read well from simple shapes). Support/tech units (repair drone) look "plain" without mechanical storytelling. Drone v2 detail checklist:
+- **Quad-rotor layout**: 4 corner pods + translucent diagonal rotor blades (alpha ~170) alternating A/B per frame = spin animation
+- **Color storytelling**: orange welding tip at the rear (universal "repair tool" color, doesn't clash with team green), tip heats brighter on frame 2 (welding sparkle)
+- **Hull detail**: top-left light source highlight + bottom-right shade, vent grilles, panel lines
+- Team light still center (blinking 2×2 → reads as "heart")
+- Wreck: missing one rotor pod + cracked hull + scorch = instantly readable as "this drone died"
+- Green px count is small (8) on purpose: only the core light is team colored
