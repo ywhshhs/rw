@@ -1,0 +1,6 @@
+[mod]
+title: Mini Tank (Test Mod)
+description: Adds one tiny tank. Buildable from the starter base (Command Center) and any builder - builder, builderShip, combat/mech engineer and fabricators.
+author: ywhshhs
+version: 1.0.0
+tags: units, test
