@@ -324,3 +324,21 @@ canAttackLandUnits: false
 canAttackUnderwaterUnits: false
 ```
 **Rule:** required fields can have their values changed but never be omitted. `false` disarms; missing section = load error.
+
+---
+
+## 13. THE CACHING TRAP (learned the hard way — 3 identical downloads)
+
+**User-confirmed behavior:** if the newly downloaded `.rwmod` has the SAME NAME as one already installed, the game (and/or the browser downloading it) keeps the **cached old copy** — your fix never actually loads, and the error repeats no matter how many times you re-download.
+
+**Why it happens (two caches stack):**
+1. **Browser cache** — same URL/filename → same stale bytes on Android download
+2. **Game mod identity** — the mod's file/folder name in `rustedWarfare/units/` is its identity; a re-import with the same name doesn't cleanly replace the old broken copy
+
+**The fix ritual (when pushing an update for a mod that errors):**
+1. Fix the INI → rebuild
+2. **Rename the file** (`TinyArmy.rwmod` → `TinyArmy_v2.rwmod`) and bump `version:` (and optionally show it in `title:` so you can SEE which copy the Mods list has)
+3. Delete ALL old mod entries in the in-game Mods menu (old packs, old single-unit mods — any that contain the same units)
+4. Import the fresh file, enable, start a NEW match (mods load at match start, not in the menu)
+
+**Rule of thumb:** *changing the file is not enough if the name is the same — rename to bust every cache layer.*
